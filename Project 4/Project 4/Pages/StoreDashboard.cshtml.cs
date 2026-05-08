@@ -5,6 +5,15 @@ namespace SupermarketInventory.Pages
 {
     public class StoreDashboardModel : PageModel
     {
+
+
+        private readonly TransferService _transferService;
+
+        public StoreDashboardModel(TransferService transferService)
+        {
+            _transferService = transferService;
+        }
+
         [BindProperty(SupportsGet = true)]
         public string Store { get; set; } = "willow";
 
@@ -47,6 +56,14 @@ namespace SupermarketInventory.Pages
                     StockValue = "$1,177";
                     break;
             }
+        }
+        public IActionResult OnPostTransfer(TransferRequest request)
+        {
+            string result = _transferService.TransferStock(request);
+
+            TempData["Message"] = result;
+
+            return RedirectToPage();
         }
     }
 }

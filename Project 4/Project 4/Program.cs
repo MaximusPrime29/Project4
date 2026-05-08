@@ -7,6 +7,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<TransferService>();
+
 var app = builder.Build();
 
 // Middleware

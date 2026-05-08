@@ -4,7 +4,7 @@ public class Inventory
 {
 	public int InventoryId { get; set; }
 	public Product Product { get; set; }
-    public int productID { get; set; }
+    public int ProductId { get; set; }
 	public int StoreID { get; set; }
 	public int Quantity { get; set; }
     public int MinimumQuantity { get; set; }

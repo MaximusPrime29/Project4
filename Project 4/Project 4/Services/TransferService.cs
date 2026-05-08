@@ -3,13 +3,19 @@ using System.Linq;
 
 public class TransferService
 {
-    private readonly List<Inventory> _inventories;
-    private readonly List<Transfer> _transfers;
+    private List<Inventory> inventories = new List<Inventory>();
 
-    public TransferService(List<Inventory> inventories, List<Transfer> transfers)
+    private List<Transfer> transfers = new List<Transfer>();
+
+    public TransferService()
     {
-        _inventories = inventories;
-        _transfers = transfers;
+        // Temporary test data
+
+        inventories.Add(new Inventory(1, 1, 1, 50, 10,
+            DateTime.Now.AddDays(7)));
+
+        inventories.Add(new Inventory(2, 1, 2, 20, 10,
+            DateTime.Now.AddDays(7)));
     }
 
     public string TransferStock(TransferRequest request)
@@ -24,11 +30,11 @@ public class TransferService
             return "Source and destination store cannot be the same.";
         }
 
-        Inventory sourceInventory = _inventories.FirstOrDefault(i =>
+        Inventory sourceInventory = inventories.FirstOrDefault(i =>
             i.StoreID == request.FromStoreId &&
             i.ProductId == request.ProductId);
 
-        Inventory destinationInventory = _inventories.FirstOrDefault(i =>
+        Inventory destinationInventory = inventories.FirstOrDefault(i =>
             i.StoreID == request.ToStoreId &&
             i.ProductId == request.ProductId);
 
@@ -50,14 +56,14 @@ public class TransferService
         }
 
         Transfer transfer = new Transfer(
-            _transfers.Count + 1,
+            transfers.Count + 1,
             request.FromStoreId,
             request.ToStoreId,
             request.ProductId,
             request.Quantity
         );
 
-        _transfers.Add(transfer);
+        transfers.Add(transfer);
 
         return "Transfer successful.";
     }
