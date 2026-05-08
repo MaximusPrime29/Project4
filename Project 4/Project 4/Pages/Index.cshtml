@@ -1,0 +1,89 @@
+﻿@page
+@model IndexModel
+
+<section class="stores-page">
+    <div class="page-header">
+        <h1>Choose a store to manage</h1>
+        <p>
+            Each location has its own inventory, reorder thresholds, and recent order history.
+            Pick one to open its operations dashboard.
+        </p>
+    </div>
+
+    <div class="store-grid">
+        <a class="store-card" asp-page="/StoreDashboard" asp-route-store="willow">
+            <div class="store-card-top">
+                <div class="store-icon">🌿</div>
+                <span class="alert-badge">5 alerts</span>
+            </div>
+
+            <h2>Willow Creek Market</h2>
+            <p class="store-location">Downtown · 1200 Elm St</p>
+
+            <div class="store-stats">
+                <div>
+                    <span>Items</span>
+                    <strong>10</strong>
+                </div>
+                <div>
+                    <span>Units</span>
+                    <strong>365</strong>
+                </div>
+                <div>
+                    <span>Value</span>
+                    <strong>$1,177</strong>
+                </div>
+            </div>
+        </a>
+
+        <a class="store-card" asp-page="/StoreDashboard" asp-route-store="harbor">
+            <div class="store-card-top">
+                <div class="store-icon">⚓</div>
+                <span class="alert-badge">4 alerts</span>
+            </div>
+
+            <h2>Harbor Point Grocer</h2>
+            <p class="store-location">Marina District · 88 Pier Ave</p>
+
+            <div class="store-stats">
+                <div>
+                    <span>Items</span>
+                    <strong>10</strong>
+                </div>
+                <div>
+                    <span>Units</span>
+                    <strong>508</strong>
+                </div>
+                <div>
+                    <span>Value</span>
+                    <strong>$1,639</strong>
+                </div>
+            </div>
+        </a>
+
+        <a class="store-card" asp-page="/StoreDashboard" asp-route-store="summit">
+            <div class="store-card-top">
+                <div class="store-icon">⛰️</div>
+                <span class="alert-badge">8 alerts</span>
+            </div>
+
+            <h2>Summit Hill Provisions</h2>
+            <p class="store-location">Uptown · 451 Ridge Rd</p>
+
+            <div class="store-stats">
+                <div>
+                    <span>Items</span>
+                    <strong>10</strong>
+                </div>
+                <div>
+                    <span>Units</span>
+                    <strong>252</strong>
+                </div>
+                <div>
+                    <span>Value</span>
+                    <strong>$813</strong>
+                </div>
+            </div>
+        </a>
+    </div>
+</section>
