@@ -1,0 +1,526 @@
+﻿@page
+@model SupermarketInventory.Pages.StoreDashboardModel
+
+<header class="dashboard-header">
+    <a class="back-link" asp-page="/Index">← Stores</a>
+
+    <div class="selected-store">
+        <div class="store-icon">@Model.StoreIcon</div>
+        <div>
+            <h1>@Model.StoreName</h1>
+            <p>@Model.StoreLocation</p>
+        </div>
+    </div>
+
+    <button type="button" class="add-item-btn" onclick="openAddItemModal()">+ Add Item</button>
+</header>
+
+<main class="dashboard-page">
+    <section class="summary-grid">
+        <div class="summary-card">
+            <span>SKUS</span>
+            <strong>10</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>TOTAL UNITS</span>
+            <strong>@Model.TotalUnits</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>LOW STOCK ALERTS</span>
+            <strong class="warning-text">@Model.Alerts</strong>
+        </div>
+
+        <div class="summary-card">
+            <span>STOCK VALUE</span>
+            <strong>@Model.StockValue</strong>
+        </div>
+    </section>
+
+    <section class="dashboard-content">
+        <div class="stock-panel">
+            <div class="panel-header">
+                <h2>Stock List</h2>
+
+                <div class="table-controls">
+                    <input id="searchInput" type="text" placeholder="Search inventory..." />
+                    <select id="sortSelect">
+                        <option>Sort: Status</option>
+                        <option>Sort: Name</option>
+                        <option>Sort: Qty ↑</option>
+                        <option>Sort: Qty ↓</option>
+                        <option>Sort: Category</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="stock-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Item</th>
+                        <th>Category</th>
+                        <th>Qty</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody id="stockTableBody">
+                    <tr class="selected-row stock-row"
+                        data-search="whole milk dairy dai-101"
+                        data-sku="DAI-101"
+                        data-name="Whole Milk 1L"
+                        data-category="Dairy"
+                        data-current="18"
+                        data-max="100"
+                        data-cost="$1.80"
+                        data-status="Low"
+                        data-delivery="Apr 24, 2026">
+                        <td>DAI-101</td>
+                        <td><strong>Whole Milk 1L</strong></td>
+                        <td>Dairy</td>
+                        <td>18/100</td>
+                        <td><span class="status low">Low</span></td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+
+                    <tr class="stock-row"
+                        data-search="aged cheddar dairy dai-110"
+                        data-sku="DAI-110"
+                        data-name="Aged Cheddar 200g"
+                        data-category="Dairy"
+                        data-current="0"
+                        data-max="40"
+                        data-cost="$4.20"
+                        data-status="Out of Stock"
+                        data-delivery="Apr 19, 2026">
+                        <td>DAI-110</td>
+                        <td><strong>Aged Cheddar 200g</strong></td>
+                        <td>Dairy</td>
+                        <td>0/40</td>
+                        <td><span class="status out">Out of Stock</span></td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+
+                    <tr class="stock-row"
+                        data-search="cold brew coffee beverages bev-014"
+                        data-sku="BEV-014"
+                        data-name="Cold Brew Coffee"
+                        data-category="Beverages"
+                        data-current="8"
+                        data-max="80"
+                        data-cost="$3.10"
+                        data-status="Critical"
+                        data-delivery="Apr 21, 2026">
+                        <td>BEV-014</td>
+                        <td><strong>Cold Brew Coffee</strong></td>
+                        <td>Beverages</td>
+                        <td>8/80</td>
+                        <td><span class="status critical">Critical</span></td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+
+                    <tr class="stock-row"
+                        data-search="heirloom tomato produce prd-502"
+                        data-sku="PRD-502"
+                        data-name="Heirloom Tomato"
+                        data-category="Produce"
+                        data-current="3"
+                        data-max="80"
+                        data-cost="$2.50"
+                        data-status="Critical"
+                        data-delivery="Apr 22, 2026">
+                        <td>PRD-502</td>
+                        <td><strong>Heirloom Tomato</strong></td>
+                        <td>Produce</td>
+                        <td>3/80</td>
+                        <td><span class="status critical">Critical</span></td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+
+                    <tr class="stock-row"
+                        data-search="sourdough loaf bakery bak-220"
+                        data-sku="BAK-220"
+                        data-name="Sourdough Loaf"
+                        data-category="Bakery"
+                        data-current="14"
+                        data-max="50"
+                        data-cost="$5.00"
+                        data-status="Low"
+                        data-delivery="Apr 23, 2026">
+                        <td>BAK-220</td>
+                        <td><strong>Sourdough Loaf</strong></td>
+                        <td>Bakery</td>
+                        <td>14/50</td>
+                        <td><span class="status low">Low</span></td>
+                        <td><button class="delete-btn">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <aside class="details-panel">
+            <div class="details-header">
+                <h2>Item Details</h2>
+            </div>
+
+            <div class="details-body">
+                <span id="detailsSku" class="sku-text">DAI-101</span>
+                <h3 id="detailsName">Whole Milk 1L</h3>
+                <p id="detailsCategory">Dairy</p>
+
+                <div class="capacity-row">
+                    <span>Capacity</span>
+                    <span id="detailsPercent">18%</span>
+                </div>
+
+                <div class="capacity-bar">
+                    <div id="detailsBar"></div>
+                </div>
+
+                <div class="details-grid">
+                    <div>
+                        <span>Current</span>
+                        <strong id="detailsCurrent">18</strong>
+                    </div>
+                    <div>
+                        <span>Max capacity</span>
+                        <strong id="detailsMax">100</strong>
+                    </div>
+                    <div>
+                        <span>Unit cost</span>
+                        <strong id="detailsCost">$1.80</strong>
+                    </div>
+                    <div>
+                        <span>Status</span>
+                        <strong><span id="detailsStatus" class="status low">Low</span></strong>
+                    </div>
+                </div>
+
+                <div class="detail-line">
+                    <span>Last delivered</span>
+                    <strong id="detailsDelivery">Apr 24, 2026</strong>
+                </div>
+
+                <div class="detail-line">
+                    <span>Most recent order</span>
+                    <strong>—</strong>
+                </div>
+
+                <div class="details-actions">
+                    <button type="button" class="primary-btn" onclick="openOrderStockModal()">Order Stock</button>
+                    <button type="button" class="secondary-btn" onclick="openTransferStockModal()">Transfer</button>
+                    <button type="button" class="secondary-btn full" onclick="openEditItemModal()">Edit Item</button>
+                </div>
+
+                <div class="reminders-panel">
+                    <h3>Reorder Reminders</h3>
+
+                    <div class="reminder-item critical-border">
+                        <div>
+                            <strong>Aged Cheddar 200g</strong>
+                            <span>0/40 units</span>
+                        </div>
+                        <button type="button">Order</button>
+                    </div>
+
+                    <div class="reminder-item critical-border">
+                        <div>
+                            <strong>Heirloom Tomato</strong>
+                            <span>3/80 units</span>
+                        </div>
+                        <button type="button">Order</button>
+                    </div>
+
+                    <div class="reminder-item low-border">
+                        <div>
+                            <strong>Sourdough Loaf</strong>
+                            <span>14/50 units</span>
+                        </div>
+                        <button type="button">Order</button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </section>
+</main>
+
+<div id="addItemModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="custom-modal-header">
+            <div>
+                <h2>Add Stock Item</h2>
+                <p>Create a new SKU for this store.</p>
+            </div>
+            <button type="button" onclick="closeAddItemModal()">×</button>
+        </div>
+
+        <div class="custom-modal-grid">
+            <div><label>SKU</label><input /></div>
+            <div><label>Category</label><input /></div>
+            <div class="full"><label>Name</label><input /></div>
+            <div><label>Quantity</label><input value="0" /></div>
+            <div><label>Max capacity</label><input value="100" /></div>
+            <div class="full"><label>Unit cost ($)</label><input value="0" /></div>
+        </div>
+
+        <div class="custom-modal-actions">
+            <button type="button" class="secondary-btn" onclick="closeAddItemModal()">Cancel</button>
+            <button type="button" class="primary-btn">Add Item</button>
+        </div>
+    </div>
+</div>
+
+<div id="orderStockModal" class="custom-modal-overlay">
+    <div class="custom-modal-box small-modal">
+        <div class="custom-modal-header">
+            <div>
+                <h2>Order Stock</h2>
+                <p>Place a replenishment order for <strong id="orderItemName">Whole Milk 1L</strong>.</p>
+            </div>
+            <button type="button" onclick="closeOrderStockModal()">×</button>
+        </div>
+
+        <div class="order-info-box">
+            Current: <strong id="orderCurrent">18</strong> ·
+            Max: <strong id="orderMax">100</strong> ·
+            Estimated cost: <strong id="orderCost">$147.60</strong>
+        </div>
+
+        <div class="custom-modal-grid single-column">
+            <div>
+                <label>Quantity to order</label>
+                <input id="orderQuantity" value="82" />
+            </div>
+        </div>
+
+        <div class="custom-modal-actions">
+            <button type="button" class="secondary-btn" onclick="closeOrderStockModal()">Cancel</button>
+            <button type="button" class="primary-btn">Place Order</button>
+        </div>
+    </div>
+</div>
+
+<div id="transferStockModal" class="custom-modal-overlay">
+    <div class="custom-modal-box small-modal">
+        <div class="custom-modal-header">
+            <div>
+                <h2>Transfer Stock</h2>
+                <p>Move <strong id="transferItemName">Whole Milk 1L</strong> from this store to another location.</p>
+            </div>
+            <button type="button" onclick="closeTransferStockModal()">×</button>
+        </div>
+
+        <div class="custom-modal-grid single-column">
+            <div>
+                <label>Destination store</label>
+                <select class="modal-select">
+                    <option>⚓ Harbor Point Grocer</option>
+                    <option>⛰️ Summit Hill Provisions</option>
+                </select>
+            </div>
+
+            <div>
+                <label id="transferQuantityLabel">Quantity (max 18)</label>
+                <input value="10" />
+            </div>
+        </div>
+
+        <div class="custom-modal-actions">
+            <button type="button" class="secondary-btn" onclick="closeTransferStockModal()">Cancel</button>
+            <button type="button" class="primary-btn">Transfer</button>
+        </div>
+    </div>
+</div>
+
+<div id="editItemModal" class="custom-modal-overlay">
+    <div class="custom-modal-box">
+        <div class="custom-modal-header">
+            <div>
+                <h2>Edit Item</h2>
+                <p>Update item details, quantities, or capacity.</p>
+            </div>
+            <button type="button" onclick="closeEditItemModal()">×</button>
+        </div>
+
+        <div class="custom-modal-grid">
+            <div><label>SKU</label><input id="editSku" value="DAI-101" /></div>
+            <div><label>Category</label><input id="editCategory" value="Dairy" /></div>
+            <div class="full"><label>Name</label><input id="editName" value="Whole Milk 1L" /></div>
+            <div><label>Quantity</label><input id="editCurrent" value="18" /></div>
+            <div><label>Max capacity</label><input id="editMax" value="100" /></div>
+            <div class="full"><label>Unit cost ($)</label><input id="editCost" value="1.8" /></div>
+        </div>
+
+        <div class="custom-modal-actions">
+            <button type="button" class="secondary-btn" onclick="closeEditItemModal()">Cancel</button>
+            <button type="button" class="primary-btn">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedItem = {
+        sku: "DAI-101",
+        name: "Whole Milk 1L",
+        category: "Dairy",
+        current: "18",
+        max: "100",
+        cost: "$1.80",
+        status: "Low",
+        delivery: "Apr 24, 2026"
+    };
+
+    function openAddItemModal() {
+        document.getElementById("addItemModal").classList.add("active");
+    }
+
+    function closeAddItemModal() {
+        document.getElementById("addItemModal").classList.remove("active");
+    }
+
+    function openOrderStockModal() {
+        document.getElementById("orderItemName").innerText = selectedItem.name;
+        document.getElementById("orderCurrent").innerText = selectedItem.current;
+        document.getElementById("orderMax").innerText = selectedItem.max;
+
+        const missingQuantity = Number(selectedItem.max) - Number(selectedItem.current);
+        const unitCost = Number(selectedItem.cost.replace("$", ""));
+        document.getElementById("orderQuantity").value = missingQuantity;
+        document.getElementById("orderCost").innerText = "$" + (missingQuantity * unitCost).toFixed(2);
+
+        document.getElementById("orderStockModal").classList.add("active");
+    }
+
+    function closeOrderStockModal() {
+        document.getElementById("orderStockModal").classList.remove("active");
+    }
+
+    function openTransferStockModal() {
+        document.getElementById("transferItemName").innerText = selectedItem.name;
+        document.getElementById("transferQuantityLabel").innerText = "Quantity (max " + selectedItem.current + ")";
+        document.getElementById("transferStockModal").classList.add("active");
+    }
+
+    function closeTransferStockModal() {
+        document.getElementById("transferStockModal").classList.remove("active");
+    }
+
+    function openEditItemModal() {
+        document.getElementById("editSku").value = selectedItem.sku;
+        document.getElementById("editCategory").value = selectedItem.category;
+        document.getElementById("editName").value = selectedItem.name;
+        document.getElementById("editCurrent").value = selectedItem.current;
+        document.getElementById("editMax").value = selectedItem.max;
+        document.getElementById("editCost").value = selectedItem.cost.replace("$", "");
+        document.getElementById("editItemModal").classList.add("active");
+    }
+
+    function closeEditItemModal() {
+        document.getElementById("editItemModal").classList.remove("active");
+    }
+
+    document.querySelectorAll(".stock-row").forEach(row => {
+        row.addEventListener("click", () => {
+            document.querySelectorAll(".stock-row").forEach(r => {
+                r.classList.remove("selected-row");
+            });
+
+            row.classList.add("selected-row");
+
+            selectedItem = {
+                sku: row.dataset.sku,
+                name: row.dataset.name,
+                category: row.dataset.category,
+                current: row.dataset.current,
+                max: row.dataset.max,
+                cost: row.dataset.cost,
+                status: row.dataset.status,
+                delivery: row.dataset.delivery
+            };
+
+            const percent = Math.round((Number(selectedItem.current) / Number(selectedItem.max)) * 100);
+
+            document.getElementById("detailsSku").innerText = selectedItem.sku;
+            document.getElementById("detailsName").innerText = selectedItem.name;
+            document.getElementById("detailsCategory").innerText = selectedItem.category;
+            document.getElementById("detailsCurrent").innerText = selectedItem.current;
+            document.getElementById("detailsMax").innerText = selectedItem.max;
+            document.getElementById("detailsCost").innerText = selectedItem.cost;
+            document.getElementById("detailsDelivery").innerText = selectedItem.delivery;
+            document.getElementById("detailsPercent").innerText = percent + "%";
+            document.getElementById("detailsBar").style.width = percent + "%";
+
+            const statusElement = document.getElementById("detailsStatus");
+            statusElement.innerText = selectedItem.status;
+            statusElement.className = "status";
+
+            if (selectedItem.status === "Low") {
+                statusElement.classList.add("low");
+            } else if (selectedItem.status === "Critical") {
+                statusElement.classList.add("critical");
+            } else if (selectedItem.status === "Out of Stock") {
+                statusElement.classList.add("out");
+            } else {
+                statusElement.classList.add("in");
+            }
+        });
+    });
+
+        const searchInput = document.getElementById("searchInput");
+    const sortSelect = document.getElementById("sortSelect");
+    const tableBody = document.getElementById("stockTableBody");
+
+    searchInput.addEventListener("input", filterRows);
+    sortSelect.addEventListener("change", sortRows);
+
+    function filterRows() {
+        const value = searchInput.value.toLowerCase();
+
+        document.querySelectorAll(".stock-row").forEach(row => {
+            const searchText = row.dataset.search;
+
+            if (searchText.includes(value)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+    function sortRows() {
+        const rows = Array.from(document.querySelectorAll(".stock-row"));
+        const sortValue = sortSelect.value;
+
+        rows.sort((a, b) => {
+
+            if (sortValue === "Sort: Name") {
+                return a.dataset.name.localeCompare(b.dataset.name);
+            }
+
+            if (sortValue === "Sort: Category") {
+                return a.dataset.category.localeCompare(b.dataset.category);
+            }
+
+            if (sortValue === "Sort: Qty ↑") {
+                return Number(a.dataset.current) - Number(b.dataset.current);
+            }
+
+            if (sortValue === "Sort: Qty ↓") {
+                return Number(b.dataset.current) - Number(a.dataset.current);
+            }
+
+            if (sortValue === "Sort: Status") {
+                return a.dataset.status.localeCompare(b.dataset.status);
+            }
+
+            return 0;
+        });
+
+        rows.forEach(row => {
+            tableBody.appendChild(row);
+        });
+    }
+</script>
