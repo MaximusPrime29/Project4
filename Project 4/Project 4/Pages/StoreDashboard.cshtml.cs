@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Project_4.Services;
 
 namespace SupermarketInventory.Pages
 {
     public class StoreDashboardModel : PageModel
     {
-
+        public List<Inventory> Inventories { get; set; }
 
         private readonly TransferService _transferService;
 
-        public StoreDashboardModel(TransferService transferService)
+        private readonly InventoryService _inventoryService;
+
+        public StoreDashboardModel(TransferService transferService, InventoryService inventoryService)
         {
             _transferService = transferService;
+            _inventoryService = inventoryService;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -56,6 +60,8 @@ namespace SupermarketInventory.Pages
                     StockValue = "$1,177";
                     break;
             }
+
+            Inventories= _inventoryService.GetInventory();
         }
         public IActionResult OnPostTransfer(TransferRequest request)
         {

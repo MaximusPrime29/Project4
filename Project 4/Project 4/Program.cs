@@ -1,3 +1,5 @@
+using Project_4.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services
@@ -8,6 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<TransferService>();
+
+builder.Services.AddSingleton<InventoryService>();
 
 var app = builder.Build();
 
