@@ -6,6 +6,7 @@ namespace SupermarketInventory.Pages
 {
     public class StoreDashboardModel : PageModel
     {
+        int storeId;
         public List<Inventory> Inventories { get; set; }
 
         private readonly TransferService _transferService;
@@ -61,7 +62,7 @@ namespace SupermarketInventory.Pages
                     break;
             }
 
-            Inventories= _inventoryService.GetInventory();
+            Inventories = _inventoryService.GetInventoryByStore(storeId);
         }
         public IActionResult OnPostTransfer(TransferRequest request)
         {

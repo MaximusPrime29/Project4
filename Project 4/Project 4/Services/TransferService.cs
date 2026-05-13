@@ -49,12 +49,12 @@ public class TransferService
 
         // Find the inventory record for the source store and product
         Inventory sourceInventory = inventories.FirstOrDefault(i =>
-            i.StoreID == request.FromStoreId &&
+            i.StoreId == request.FromStoreId &&
             i.ProductId == request.ProductId);
 
         // Find the inventory record for the destination store and product
         Inventory destinationInventory = inventories.FirstOrDefault(i =>
-            i.StoreID == request.ToStoreId &&
+            i.StoreId == request.ToStoreId &&
             i.ProductId == request.ProductId);
 
         // Transfer cannot continue if the source inventory does not exist
