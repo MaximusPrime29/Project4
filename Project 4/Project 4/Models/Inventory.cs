@@ -4,8 +4,8 @@ public class Inventory
 {
 	public int InventoryId { get; set; }
 	public Product Product { get; set; }
-    public int productID { get; set; }
-	public int StoreID { get; set; }
+    public int ProductId { get; set; }
+	public int StoreId { get; set; }
 	public int Quantity { get; set; }
     public int MinimumQuantity { get; set; }
     public DateTime ExpiryDate { get; set; }
@@ -14,7 +14,7 @@ public class Inventory
 	{
 		InventoryId = inventoryId;
 		ProductId = productId;
-		StoreID = storeID;
+		StoreId = storeID;
 		Quantity = quantity;
         MinimumQuantity = minQuantity;
         ExpiryDate = expiryDate;
