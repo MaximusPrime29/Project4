@@ -25,11 +25,11 @@ public class TransferService
         }
 
         Inventory sourceInventory = _inventories.FirstOrDefault(i =>
-            i.StoreID == request.FromStoreId &&
+            i.StoreId == request.FromStoreId &&
             i.ProductId == request.ProductId);
 
         Inventory destinationInventory = _inventories.FirstOrDefault(i =>
-            i.StoreID == request.ToStoreId &&
+            i.StoreId == request.ToStoreId &&
             i.ProductId == request.ProductId);
 
         if (sourceInventory == null)

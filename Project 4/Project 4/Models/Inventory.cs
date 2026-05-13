@@ -3,18 +3,17 @@
 public class Inventory
 {
 	public int InventoryId { get; set; }
-	public Product Product { get; set; }
     public int ProductId { get; set; }
 	public int StoreId { get; set; }
 	public int Quantity { get; set; }
     public int MinimumQuantity { get; set; }
     public DateTime ExpiryDate { get; set; }
 
-    public Inventory(int inventoryId, int productId, int storeID, int quantity, int minQuantity, DateTime expiryDate)
+    public Inventory(int inventoryId, int productId, int storeId, int quantity, int minQuantity, DateTime expiryDate)
 	{
 		InventoryId = inventoryId;
 		ProductId = productId;
-		StoreId = storeID;
+		StoreId = storeId;
 		Quantity = quantity;
         MinimumQuantity = minQuantity;
         ExpiryDate = expiryDate;
@@ -23,6 +22,7 @@ public class Inventory
     {
         return ExpiryDate <= DateTime.Now.AddDays(3);
     }
+
 
     public bool IsLowStock()
     {
