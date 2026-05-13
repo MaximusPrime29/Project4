@@ -1,10 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Project_4.Services;
 
 namespace SupermarketInventory.Pages
 {
     public class StoreDashboardModel : PageModel
     {
+        public List<Inventory> Inventories { get; set; }
+
+        private readonly TransferService _transferService;
+
+        private readonly InventoryService _inventoryService;
+
+        public StoreDashboardModel(TransferService transferService, InventoryService inventoryService)
+        {
+            _transferService = transferService;
+            _inventoryService = inventoryService;
+        }
+
         [BindProperty(SupportsGet = true)]
         public string Store { get; set; } = "willow";
 
@@ -47,6 +60,16 @@ namespace SupermarketInventory.Pages
                     StockValue = "$1,177";
                     break;
             }
+
+            Inventories= _inventoryService.GetInventory();
+        }
+        public IActionResult OnPostTransfer(TransferRequest request)
+        {
+            string result = _transferService.TransferStock(request);
+
+            TempData["Message"] = result;
+
+            return RedirectToPage();
         }
     }
 }

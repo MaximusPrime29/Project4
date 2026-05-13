@@ -1,5 +1,13 @@
 ﻿@page
 @model SupermarketInventory.Pages.StoreDashboardModel
+@if (TempData["Message"] != null)
+{
+    <div class="alert-message">
+        @TempData["Message"]
+    </div>
+}
+
+<p> Inventroy records loaded : @Model.Inventories.Count</p>
 
 <header class="dashboard-header">
     <a class="back-link" asp-page="/Index">← Stores</a>
@@ -305,33 +313,42 @@
 
 <div id="transferStockModal" class="custom-modal-overlay">
     <div class="custom-modal-box small-modal">
-        <div class="custom-modal-header">
-            <div>
-                <h2>Transfer Stock</h2>
-                <p>Move <strong id="transferItemName">Whole Milk 1L</strong> from this store to another location.</p>
-            </div>
-            <button type="button" onclick="closeTransferStockModal()">×</button>
-        </div>
 
-        <div class="custom-modal-grid single-column">
-            <div>
-                <label>Destination store</label>
-                <select class="modal-select">
-                    <option>⚓ Harbor Point Grocer</option>
-                    <option>⛰️ Summit Hill Provisions</option>
-                </select>
+        <form method="post" asp-page-handler="Transfer">
+
+            <div class="custom-modal-header">
+                <div>
+                    <h2>Transfer Stock</h2>
+                    <p>Move <strong id="transferItemName">Whole Milk 1L</strong> from this store to another location.</p>
+                </div>
+                <button type="button" onclick="closeTransferStockModal()">×</button>
             </div>
 
-            <div>
-                <label id="transferQuantityLabel">Quantity (max 18)</label>
-                <input value="10" />
-            </div>
-        </div>
+            <input type="hidden" name="FromStoreId" value="1" />
+            <input type="hidden" name="ProductId" value="1" />
 
-        <div class="custom-modal-actions">
-            <button type="button" class="secondary-btn" onclick="closeTransferStockModal()">Cancel</button>
-            <button type="button" class="primary-btn">Transfer</button>
-        </div>
+            <div class="custom-modal-grid single-column">
+                <div>
+                    <label>Destination store</label>
+                    <select name="ToStoreId" class="modal-select">
+                        <option value="2">⚓ Harbor Point Grocer</option>
+                        <option value="3">⛰️ Summit Hill Provisions</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label id="transferQuantityLabel">Quantity (max 18)</label>
+                    <input name="Quantity" value="10" />
+                </div>
+            </div>
+
+            <div class="custom-modal-actions">
+                <button type="button" class="secondary-btn" onclick="closeTransferStockModal()">Cancel</button>
+                <button type="submit" class="primary-btn">Transfer</button>
+            </div>
+
+        </form>
+
     </div>
 </div>
 
