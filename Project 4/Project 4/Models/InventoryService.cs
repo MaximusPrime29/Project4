@@ -5,48 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 public class InventoryService
 {
-    private List<Product> products = new();
-    private List<Store> stores = new();
-    private List<Inventory> inventory = new();
+    private readonly AppDbContext context;
 
-    public void SeedData() // Test Data
+    public InventoryService(AppDbContext context)
     {
-        Store store1 = new Store(1, "FreshChoice Eindhoven", "Eindhoven");
-        Store store2 = new Store(2, "FreshChoice Veldhoven", "Veldhoven");
-
-        stores.Add(store1);
-        stores.Add(store2);
-
-        Product milk = new Product(1, "Milk", 1.99m, "Dairy");
-        Product bread = new Product(2, "Bread", 2.99m, "Baked goods");
-
-        products.Add(milk);
-        products.Add(bread);
-
-        inventory.Add(new Inventory(1, 1, 1, 25, 10, DateTime.Now.AddDays(7)));
-        inventory.Add(new Inventory(2, 2, 1, 5, 10, DateTime.Now.AddDays(2)));
-        inventory.Add(new Inventory(3, 3, 2, 40, 15, DateTime.Now.AddDays(10)));
-    }
-
-    public InventoryService()
-    {
-        SeedData();
+        this.context = context;
     }
 
     public List<Product> GetProducts()
     {
-        return products;
+        return context.Products;
     }
 
     public List<Inventory> GetInventoryByStore(int storeId)
     {
-        return inventory
+        return context.Inventories
             .Where(i => i.StoreId == storeId)
             .ToList();
     }
+
     public void UpdateQuantity(int inventoryId, int newQuantity)
     {
-        Inventory item = inventory
+        Inventory? item = context.Inventories
             .FirstOrDefault(i => i.InventoryId == inventoryId);
 
         if (item != null)
@@ -54,17 +34,18 @@ public class InventoryService
             item.Quantity = newQuantity;
         }
     }
+
     public List<Inventory> GetLowStockItems()
     {
-        return inventory
+        return context.Inventories
             .Where(i => i.IsLowStock())
             .ToList();
     }
+
     public List<Inventory> GetExpiringItems()
     {
-        return inventory
+        return context.Inventories
             .Where(i => i.IsExpiringSoon())
             .ToList();
     }
 }
-
