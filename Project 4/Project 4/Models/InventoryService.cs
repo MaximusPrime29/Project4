@@ -17,8 +17,8 @@ public class InventoryService
         stores.Add(store1);
         stores.Add(store2);
 
-        Product milk = new Product(1, "Milk", 1.99m, "Fresh whole milk");
-        Product bread = new Product(2, "Bread", 2.99m, "Whole grain bread");
+        Product milk = new Product(1, "Milk", 1.99m, "Dairy");
+        Product bread = new Product(2, "Bread", 2.99m, "Baked goods");
 
         products.Add(milk);
         products.Add(bread);
@@ -27,7 +27,12 @@ public class InventoryService
         inventory.Add(new Inventory(2, 2, 1, 5, 10, DateTime.Now.AddDays(2)));
         inventory.Add(new Inventory(3, 3, 2, 40, 15, DateTime.Now.AddDays(10)));
     }
-    
+
+    public InventoryService()
+    {
+        SeedData();
+    }
+
     public List<Product> GetProducts()
     {
         return products;
@@ -53,6 +58,12 @@ public class InventoryService
     {
         return inventory
             .Where(i => i.IsLowStock())
+            .ToList();
+    }
+    public List<Inventory> GetExpiringItems()
+    {
+        return inventory
+            .Where(i => i.IsExpiringSoon())
             .ToList();
     }
 }

@@ -7,11 +7,11 @@ public class Product
 	public decimal Price { get; set; }
 	public string ProductDescription { get; set; }
 
-    public Product(int productID, string productName, decimal price, string productDescription)
+    public Product(int productID, string productName, decimal price, string productCategory)
 	{
 		ProductId = productID;
 		ProductName = productName;
 		Price = price;
-		ProductDescription = productDescription;
+		ProductDescription = productCategory;
 	}
 }
