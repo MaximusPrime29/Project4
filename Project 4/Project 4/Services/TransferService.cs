@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+namespace Project_4.Services;
+
 public class TransferService
 {
     //private readonly List<Inventory> _inventories;
