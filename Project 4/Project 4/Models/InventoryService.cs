@@ -17,8 +17,8 @@ public class InventoryService
         stores.Add(store1);
         stores.Add(store2);
 
-        Product milk = new Product(1, "Milk", 1.99m, "Fresh whole milk");
-        Product bread = new Product(2, "Bread", 2.99m, "Whole grain bread");
+        Product milk = new Product(1, "Milk", 1.99m, "Dairy");
+        Product bread = new Product(2, "Bread", 2.99m, "Baked goods");
 
         products.Add(milk);
         products.Add(bread);
