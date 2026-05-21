@@ -10,6 +10,7 @@ builder.Services.AddSingleton<InventoryService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<AppDbContext>();
 
 builder.Services.AddSingleton<TransferService>();
 

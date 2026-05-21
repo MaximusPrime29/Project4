@@ -12,7 +12,7 @@ public class DbContextOptions<T> { }
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options)
+    public AppDbContext()
     {
         // Automatically fills your dataset when the application starts
         DataSeeder.Seed(this);
